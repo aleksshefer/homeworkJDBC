@@ -10,14 +10,14 @@ repositories {
 }
 
 dependencies {
-    compile "org.springframework:spring-jdbc:5.3.3"
-    compile "org.springframework:spring-context:5.3.3"
+    implementation "org.springframework:spring-jdbc:5.3.3"
+    implementation "org.springframework:spring-context:5.3.3"
 
-    compile "commons-dbcp:commons-dbcp:1.4"
-    compile "org.postgresql:postgresql:42.2.18"
+    implementation "commons-dbcp:commons-dbcp:1.4"
+    implementation "org.postgresql:postgresql:42.2.18"
 
-    testCompile 'org.springframework:spring-test:5.3.3'
-    testCompile 'org.assertj:assertj-core:3.19.0'
+    testImplementation 'org.springframework:spring-test:5.3.3'
+    testImplementation 'org.assertj:assertj-core:3.19.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }

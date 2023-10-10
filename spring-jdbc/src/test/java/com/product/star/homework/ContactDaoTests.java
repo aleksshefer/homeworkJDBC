@@ -12,19 +12,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Unit tests for {@link ContactDao}.
- *
+ * <p>
  * Аннотация @Sql подтягивает SQL-скрипт contact.sql, который будет применен к базе перед выполнением теста.
  * Contact.sql создает таблицу CONTACT с полями (ID, NAME, SURNAME, EMAIL, PHONE_NUMBER) и вставляет в нее 2 записи.
- *
+ * <p>
  * Тесты проверяют корректность реализации ContactDao.
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ContactConfiguration.class)
 @Sql("classpath:contact.sql")
-public record ContactDaoTests(@Autowired ContactDao contactDao) {
+public final class ContactDaoTests {
 
     private static final Contact IVAN = new Contact(
             1000L, "Ivan", "Ivanov", "iivanov@gmail.com", "1234567"
@@ -38,6 +39,16 @@ public record ContactDaoTests(@Autowired ContactDao contactDao) {
      * There are two contacts inserted in the database in contact.sql.
      */
     private static final List<Contact> PERSISTED_CONTACTS = List.of(IVAN, MARIA);
+
+    private final ContactDao contactDao;
+
+    /**
+     *
+     */
+    @Autowired
+    public ContactDaoTests( ContactDao contactDao) {
+        this.contactDao = contactDao;
+    }
 
     @Test
     void addContact() {
@@ -100,4 +111,27 @@ public record ContactDaoTests(@Autowired ContactDao contactDao) {
                 .isInstanceOf(EmptyResultDataAccessException.class);
 
     }
+
+
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (ContactDaoTests) obj;
+        return Objects.equals(this.contactDao, that.contactDao);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(contactDao);
+    }
+
+    @Override
+    public String toString() {
+        return "ContactDaoTests[" +
+                "contactDao=" + contactDao + ']';
+    }
+
 }
